@@ -6,42 +6,30 @@ class Query:
         self.number = int(query[1])
         if self.type == 'add':
             self.name = query[2]
+    
+    def phone_book_manager(N, queries):
+    phone_book = {}
 
-def read_queries():
-    n = int(input())
-    return [Query(input().split()) for i in range(n)]
+    for query in queries:
+      query_parts = query.split()
+    
+      if query_parts[0] == 'add':
+         phone_number = query_parts[1]
+         name = query_parts[2]
+         phone_book[phone_number] = name
+   elif query_parts[0] == 'del':
+         phone_number = query_parts[1]
+          if phone_number in phone_book:
+          del phone_book[phone_number]
+        
+   elif query_parts[0] == 'find':
+     phone_number = query_parts[1]
+       if phone_number in phone_book:
+          print(phone_book[phone_number])
+       else:
+          print('not found')
 
-def write_responses(result):
-    print('\n'.join(result))
-
-def process_queries(queries):
-    result = []
-    # Keep list of all existing (i.e. not deleted yet) contacts.
-    contacts = []
-    for cur_query in queries:
-        if cur_query.type == 'add':
-            # if we already have contact with such number,
-            # we should rewrite contact's name
-            for contact in contacts:
-                if contact.number == cur_query.number:
-                    contact.name = cur_query.name
-                    break
-            else: # otherwise, just add it
-                contacts.append(cur_query)
-        elif cur_query.type == 'del':
-            for j in range(len(contacts)):
-                if contacts[j].number == cur_query.number:
-                    contacts.pop(j)
-                    break
-        else:
-            response = 'not found'
-            for contact in contacts:
-                if contact.number == cur_query.number:
-                    response = contact.name
-                    break
-            result.append(response)
-    return result
-
-if __name__ == '__main__':
-    write_responses(process_queries(read_queries()))
+N = int(input())
+queries = [input() for _ in range(N)]
+phone_book_manager(N, queries)
 
